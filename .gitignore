@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+._*
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node (if build tooling is added later)
+node_modules/
+
+# WordPress
+wp-config.php

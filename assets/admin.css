@@ -1,0 +1,304 @@
+/* Etch Custom Fonts — Admin Styles */
+
+.ecf-wrap {
+    max-width: 860px;
+}
+
+.ecf-description {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 24px;
+}
+
+.ecf-section {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+}
+
+.ecf-section h2 {
+    margin-top: 0;
+    font-size: 16px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Upload Dropzone */
+.ecf-upload-dropzone {
+    border: 2px dashed #b4b9be;
+    border-radius: 6px;
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    margin-bottom: 12px;
+}
+
+.ecf-upload-dropzone:hover,
+.ecf-upload-dropzone.ecf-dragover {
+    border-color: #2271b1;
+    background: #f0f6fc;
+}
+
+.ecf-upload-dropzone .dashicons {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+    color: #999;
+    display: block;
+    margin: 0 auto 8px;
+}
+
+.ecf-browse-link {
+    color: #2271b1;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#ecf-upload-status {
+    min-height: 20px;
+}
+
+.ecf-upload-msg {
+    padding: 6px 10px;
+    margin: 4px 0;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.ecf-upload-msg.success {
+    background: #edfaef;
+    color: #1a7a2e;
+}
+
+.ecf-upload-msg.error {
+    background: #fce8e8;
+    color: #a00;
+}
+
+/* Files Table */
+.ecf-files-table {
+    margin-top: 8px;
+}
+
+.ecf-files-table code {
+    font-size: 13px;
+}
+
+/* Font Family Cards */
+.ecf-family-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 16px;
+    background: #fafafa;
+}
+
+.ecf-family-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.ecf-family-header label {
+    flex: 1;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.ecf-family-header input {
+    display: block;
+    margin-top: 4px;
+    width: 100%;
+}
+
+.ecf-variants-table {
+    margin-bottom: 8px;
+}
+
+.ecf-variants-table select {
+    width: 100%;
+}
+
+.ecf-add-variant {
+    margin-top: 4px;
+}
+
+.ecf-remove-family {
+    color: #a00 !important;
+    border-color: #a00 !important;
+    flex-shrink: 0;
+}
+
+/* Preview */
+.ecf-preview-box {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 20px;
+    background: #fafafa;
+    min-height: 60px;
+}
+
+.ecf-preview-family {
+    margin-bottom: 16px;
+    line-height: 1.7;
+}
+
+.ecf-preview-family strong {
+    font-size: 14px;
+    color: #333;
+}
+
+.ecf-preview-placeholder {
+    color: #888;
+    font-style: italic;
+}
+
+/* Debug CSS Output */
+.ecf-debug pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.6;
+    max-height: 400px;
+}
+
+.ecf-debug small {
+    font-weight: normal;
+    color: #888;
+}
+
+/* Google Fonts Search */
+.ecf-gf-search-wrap {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.ecf-gf-search-wrap input {
+    flex: 1;
+}
+
+.ecf-gf-results {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.ecf-gf-card {
+    border: 1px solid #ddd;
+    border-bottom: none;
+    padding: 14px 16px;
+    background: #fff;
+    transition: background 0.15s;
+}
+
+.ecf-gf-card:first-child {
+    border-radius: 6px 6px 0 0;
+}
+
+.ecf-gf-card:last-child {
+    border-bottom: 1px solid #ddd;
+    border-radius: 0 0 6px 6px;
+}
+
+.ecf-gf-card:only-child {
+    border-radius: 6px;
+    border-bottom: 1px solid #ddd;
+}
+
+.ecf-gf-card:hover {
+    background: #f6f7f7;
+}
+
+.ecf-gf-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.ecf-gf-card-info {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
+}
+
+.ecf-gf-card-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1d2327;
+}
+
+.ecf-gf-card-category {
+    font-size: 12px;
+    color: #888;
+    text-transform: capitalize;
+}
+
+.ecf-gf-card-preview {
+    font-size: 18px;
+    line-height: 1.4;
+    color: #333;
+    margin-bottom: 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.ecf-gf-card-variants {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.4;
+}
+
+.ecf-gf-install {
+    flex-shrink: 0;
+}
+
+.ecf-gf-installed {
+    background: #00a32a !important;
+    border-color: #00a32a !important;
+    color: #fff !important;
+    pointer-events: none;
+}
+
+.ecf-gf-loading,
+.ecf-gf-empty {
+    color: #888;
+    font-style: italic;
+    padding: 12px 0;
+}
+
+.ecf-gf-error {
+    color: #a00;
+    padding: 12px 0;
+}
+
+#ecf-gf-status {
+    margin-top: 8px;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+    .ecf-family-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ecf-gf-search-wrap {
+        flex-direction: column;
+    }
+
+    .ecf-gf-results {
+        grid-template-columns: 1fr;
+    }
+}
