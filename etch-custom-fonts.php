@@ -250,6 +250,9 @@ final class Etch_Custom_Fonts {
 
         wp_enqueue_style( 'ecf-admin', ECF_PLUGIN_URL . 'assets/admin.css', [], ECF_VERSION );
         wp_enqueue_script( 'ecf-admin', ECF_PLUGIN_URL . 'assets/admin.js', [ 'jquery' ], ECF_VERSION, true );
+
+        // Load the generated font stylesheet so the preview section renders correctly.
+        $this->enqueue_fontface_stylesheet();
         wp_localize_script( 'ecf-admin', 'ecfAdmin', [
             'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
             'nonce'    => wp_create_nonce( 'ecf_upload_nonce' ),
