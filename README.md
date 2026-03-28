@@ -62,6 +62,21 @@ The plugin generates `@font-face` CSS declarations and loads them via:
 - **Etch builder canvas** — registered through Etch's asset pipeline (`etch/canvas/enqueue_assets` action and `etch/canvas/additional_stylesheets` filter) so fonts render inside the builder iframe
 - **Static CSS file** — written to `/wp-content/fonts/ecf-fonts.css` for optimal caching
 
+## Compatibility and maintenance
+
+This plugin has a very small dependency surface:
+
+- **Core WordPress APIs** (`wp_head`, `wp_enqueue_scripts`, `wp_ajax_*`, Settings API) — stable for 15+ years, extremely unlikely to change
+- **Etch builder hooks** (`etch/canvas/additional_stylesheets`, `etch/canvas/enqueue_assets`) — if Etch refactors their canvas asset pipeline, these hook names may need updating. If this happens, fonts continue working on the live frontend — only the builder canvas preview would be affected until the plugin is updated
+- **ACSS custom properties** (`--heading-font-family`, `--text-font-family`) — part of ACSS's public API, very unlikely to change
+- **Google Fonts metadata endpoint** — used for search/install only. If Google changes this endpoint, the search feature would need updating, but **all previously installed fonts continue working** since they are self-hosted local files
+
+### What if Google Fonts search stops working?
+
+The Google Fonts search and install feature depends on Google's public metadata API and CSS API. If either changes, search/install may stop working until the plugin is updated. This does **not** affect fonts that have already been installed — those are local woff2 files in `/wp-content/fonts/` and will continue to work indefinitely regardless of any external API changes.
+
+You can always fall back to manually downloading font files and uploading them via Section 1.
+
 ## License
 
 [GPL-2.0-or-later](LICENSE)
