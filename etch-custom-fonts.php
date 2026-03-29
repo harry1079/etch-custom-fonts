@@ -47,10 +47,10 @@ final class Etch_Custom_Fonts {
         add_action( 'wp_head', [ $this, 'render_fontface_css' ], 1 );
 
         // Enqueue @font-face CSS inside Etch builder canvas via its asset pipeline.
-        // etch/canvas/enqueue_assets lets us wp_enqueue_style() so Etch collects the handle.
-        // etch/canvas/additional_stylesheets is a direct filter for {id, url} entries.
-        // Both are provided for maximum compatibility across Etch versions.
-        add_action( 'etch/canvas/enqueue_assets', [ $this, 'enqueue_fontface_stylesheet' ] );
+        // We use only the filter (not etch/canvas/enqueue_assets) to avoid adding
+        // a duplicate entry. Etch's normalize_assets_queue() uses array_unique()
+        // without array_values(), so duplicate entries can cause non-sequential
+        // array keys that break json_encode() serialization (object vs array).
         add_filter( 'etch/canvas/additional_stylesheets', [ $this, 'add_etch_canvas_stylesheet' ] );
 
         // Also hook into wp_enqueue_scripts as a fallback
