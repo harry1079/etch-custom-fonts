@@ -197,7 +197,9 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="ecf-section">
             <h2>4. Automatic.css Integration</h2>
             <p>Optionally map your font families to ACSS custom properties.
-               These <code>:root</code> variables will override the ACSS dashboard values.</p>
+               These <code>:root</code> variables will override the ACSS dashboard values via CSS.
+               You do <strong>not</strong> need to set fonts in the ACSS dashboard &mdash; the
+               overrides are applied at the CSS level and will take precedence automatically.</p>
 
             <table class="form-table">
                 <tr>
