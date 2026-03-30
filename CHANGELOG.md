@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-03-30
+
+### Added
+- Gutenberg integration: ECF fonts now appear in the Site Editor Typography panel and block-level font pickers
+- Uses `wp_theme_json_data_theme` filter to register font names at the theme layer (not default) so they aren't overridden by the active theme's own theme.json fontFamilies
+- Font CSS now loads inside the Gutenberg block editor iframe via `enqueue_block_assets`, so fonts render correctly when editing posts/pages
+- Registers font names only (no src/fontFace) to prevent Gutenberg generating duplicate `@font-face` rules
+- Fully automatic — existing installed fonts appear immediately after plugin update, no re-save needed
+- To revert: comment out the `wp_theme_json_data_theme` and `enqueue_block_assets` lines in the constructor
+
 ## [1.3.0] - 2026-03-28
 
 ### Security

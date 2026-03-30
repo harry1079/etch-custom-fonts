@@ -4,7 +4,7 @@ Tags: fonts, custom-fonts, etch, etchwp, automatic-css, acss, webfonts, google-f
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 
 A lightweight custom font manager for EtchWP + Automatic.css. Upload local fonts or install from Google Fonts — no Yabe Webfont needed.
@@ -31,6 +31,13 @@ Upload local font files or install directly from Google Fonts, then manage @font
 4. Upload fonts or install from Google Fonts, configure ACSS mappings, and save
 
 == Changelog ==
+
+= 1.4.0 =
+* Added Gutenberg integration — ECF fonts now appear in Site Editor Typography panel and block font pickers
+* Font CSS now loads inside the block editor iframe so fonts render when editing
+* Uses theme layer (not default) so fonts aren't overridden by active theme's theme.json
+* Automatic for existing installs — no re-save needed after update
+* To revert: comment out the wp_theme_json_data_theme and enqueue_block_assets lines in the constructor
 
 = 1.3.0 =
 * Security: path traversal protection on file operations

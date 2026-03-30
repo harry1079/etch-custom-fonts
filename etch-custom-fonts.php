@@ -3,7 +3,7 @@
  * Plugin Name: Etch Custom Fonts
  * Plugin URI: https://github.com/harry1079/etch-custom-fonts
  * Description: A lightweight custom font manager designed for EtchWP + Automatic.css workflows. Upload local font files and manage @font-face declarations without conflicts.
- * Version: 1.3.0
+ * Version: 1.4.0
  * Author: Harry Brown
  * License: GPL-2.0-or-later
  * Requires at least: 6.0
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'ECF_VERSION', '1.3.0' );
+define( 'ECF_VERSION', '1.4.0' );
 define( 'ECF_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ECF_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'ECF_FONTS_DIR', WP_CONTENT_DIR . '/fonts/' );
@@ -55,6 +55,19 @@ final class Etch_Custom_Fonts {
 
         // Also hook into wp_enqueue_scripts as a fallback
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_fontface_stylesheet' ], 1 );
+
+        // Register fonts with Gutenberg's theme.json system so they appear in the
+        // Site Editor Typography panel and block-level font pickers.
+        // We only register font-family names (no src) to avoid Gutenberg generating
+        // duplicate @font-face rules — our own CSS handles the actual font loading.
+        // We use the 'theme' layer (not 'default') so our fonts aren't overridden by
+        // the active theme's own theme.json fontFamilies definition.
+        // To revert this feature, remove or comment out the two lines below.
+        add_filter( 'wp_theme_json_data_theme', [ $this, 'register_fonts_in_theme_json' ] );
+
+        // Enqueue the @font-face CSS inside the Gutenberg block editor iframe so
+        // fonts actually render when editing posts/pages (not just on the frontend).
+        add_action( 'enqueue_block_assets', [ $this, 'enqueue_fontface_stylesheet' ] );
 
         // Ensure fonts dir exists
         $this->maybe_create_fonts_dir();
@@ -862,6 +875,74 @@ final class Etch_Custom_Fonts {
             ];
         }
         return $stylesheets;
+    }
+
+    // -------------------------------------------------------------------------
+    // Gutenberg / Theme.json Integration
+    // -------------------------------------------------------------------------
+
+    /**
+     * Register ECF fonts in Gutenberg's theme.json data so they appear in the
+     * Site Editor Typography panel and block-level font family pickers.
+     *
+     * This filter injects font-family entries (name + slug only, no src) into
+     * the theme layer of theme.json. We use the 'theme' layer rather than
+     * 'default' so our fonts aren't overridden by the active theme's own
+     * theme.json fontFamilies definition. Because no `fontFace` / `src` is
+     * provided, Gutenberg will NOT generate its own @font-face rules — our
+     * existing CSS (inline + static stylesheet + enqueue_block_assets) handles
+     * the actual font loading, avoiding any double-loading issues.
+     *
+     * Reads directly from the `ecf_font_families` option, so any fonts that
+     * are added or removed via the ECF admin page are automatically reflected
+     * in Gutenberg on the next page load with no extra save step required.
+     *
+     * To revert this feature: comment out or remove the add_filter() call for
+     * 'wp_theme_json_data_theme' in the constructor above.
+     *
+     * @since 1.4.0
+     * @param WP_Theme_JSON_Data $theme_json The default theme.json data object.
+     * @return WP_Theme_JSON_Data
+     */
+    public function register_fonts_in_theme_json( $theme_json ) {
+        $fonts = $this->get_font_families();
+        if ( empty( $fonts ) ) {
+            return $theme_json;
+        }
+
+        $font_families = [];
+        foreach ( $fonts as $family ) {
+            if ( empty( $family['name'] ) ) {
+                continue;
+            }
+
+            // Slug used internally by Gutenberg — lowercase, hyphenated.
+            $slug = sanitize_title( $family['name'] );
+
+            // Register name and slug only. Omitting fontFace/src prevents
+            // Gutenberg from generating its own @font-face declarations.
+            $font_families[] = [
+                'fontFamily' => "'{$family['name']}'",
+                'name'       => $family['name'],
+                'slug'       => $slug,
+            ];
+        }
+
+        if ( empty( $font_families ) ) {
+            return $theme_json;
+        }
+
+        // Merge our fonts into the theme layer of theme.json.
+        $theme_json->update_with( [
+            'version'  => 2,
+            'settings' => [
+                'typography' => [
+                    'fontFamilies' => $font_families,
+                ],
+            ],
+        ] );
+
+        return $theme_json;
     }
 }
 
