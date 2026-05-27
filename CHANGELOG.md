@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.1] - 2026-05-27
+
+### Fixed
+- Fixed custom fonts failing to load inside Gutenberg block editor iframe and EtchWP canvas on WordPress 7.0 due to CORS. The static `ecf-fonts.css` now uses relative paths for font files instead of absolute URLs.
+- Added version auto-migration logic inside `register_settings` to automatically regenerate `ecf-fonts.css` with relative URLs on plugin upgrade.
+
 ## [1.4.0] - 2026-03-30
 
 ### Added

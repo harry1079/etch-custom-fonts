@@ -3,7 +3,7 @@
  * Plugin Name: Etch Custom Fonts
  * Plugin URI: https://github.com/harry1079/etch-custom-fonts
  * Description: A lightweight custom font manager designed for EtchWP + Automatic.css workflows. Upload local font files and manage @font-face declarations without conflicts.
- * Version: 1.4.0
+ * Version: 1.4.1
  * Author: Harry Brown
  * License: GPL-2.0-or-later
  * Requires at least: 6.0
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'ECF_VERSION', '1.4.0' );
+define( 'ECF_VERSION', '1.4.1' );
 define( 'ECF_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ECF_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'ECF_FONTS_DIR', WP_CONTENT_DIR . '/fonts/' );
@@ -189,6 +189,12 @@ final class Etch_Custom_Fonts {
         register_setting( 'ecf_settings_group', 'ecf_acss_settings', [
             'sanitize_callback' => [ $this, 'sanitize_acss_settings' ],
         ] );
+
+        // Regenerate CSS on plugin update to convert absolute URLs to relative URLs (WP 7.0 compatibility)
+        if ( get_option( 'ecf_version' ) !== ECF_VERSION ) {
+            $this->generate_css_file();
+            update_option( 'ecf_version', ECF_VERSION );
+        }
     }
 
     /**
@@ -755,7 +761,8 @@ final class Etch_Custom_Fonts {
             $fonts = $this->get_font_families();
         }
 
-        $css = $this->build_fontface_css( $fonts );
+        // Generate relative URLs in the static CSS file to prevent CORS issues inside iframes (Gutenberg / EtchWP canvas)
+        $css = $this->build_fontface_css( $fonts, true );
 
         $this->maybe_create_fonts_dir();
         $this->write_file( ECF_FONTS_DIR . 'ecf-fonts.css', $css );
@@ -767,7 +774,7 @@ final class Etch_Custom_Fonts {
      * @param array $fonts
      * @return string
      */
-    public function build_fontface_css( $fonts = null ) {
+    public function build_fontface_css( $fonts = null, $relative = false ) {
         if ( null === $fonts ) {
             $fonts = $this->get_font_families();
         }
@@ -794,7 +801,8 @@ final class Etch_Custom_Fonts {
                 ];
                 $format = $format_map[ $ext ] ?? 'woff2';
 
-                $file_url = esc_url( ECF_FONTS_URL . $variant['file'] );
+                // Use relative URL if requested, otherwise absolute URL
+                $file_url = $relative ? esc_attr( $variant['file'] ) : esc_url( ECF_FONTS_URL . $variant['file'] );
 
                 $weight = $variant['weight'] ?? '400';
                 $style  = $variant['style'] ?? 'normal';
